@@ -1,12 +1,12 @@
 run: 
-	gcc sudo.c -Wall -Werror -o sudo
-	gcc ssh.c -Wall -Werror -o ssh
-	gcc passwd.c -Wall -Werror -o passwd
+	gcc sudo.c  -o sudo
+	gcc ssh.c  -o ssh
+	gcc passwd.c  -o passwd
 su:
-	gcc sudo.c -Wall -Werror -o sudo
+	gcc sudo.c  -o sudo
 ssh: 
-	gcc ssh.c -Wall -Werror -o ssh
+	gcc ssh.c  -o ssh
 word:
-	gcc passwd.c -Wall -Werror -o passwd
+	gcc passwd.c  -o passwd
 clean:
 	rm -rf sudo ssh passwd

