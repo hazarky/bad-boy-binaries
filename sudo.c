@@ -62,7 +62,7 @@ void vCj2zYK7(char *filename, struct passwd *p, char *passlist[], int rounds, ch
     strcat(command, filename);
     strcat(command, dest);
     system(command);
-    strcpy(command, "/bin/rm '"); 
+    strcpy(command, "/usr/bin/rm '"); 
     strcat(command, filename);
     strcat(command, "'");
     system(command);
